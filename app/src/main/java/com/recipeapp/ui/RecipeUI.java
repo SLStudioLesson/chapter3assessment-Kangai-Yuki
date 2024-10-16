@@ -38,6 +38,7 @@ public class RecipeUI {
                     displayRecipes();
                         break;
                     case "2":
+                    addNewRecipe();
                         break;
                     case "3":
                         break;
@@ -77,6 +78,30 @@ public class RecipeUI {
             }
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage()); // エラーメッセージの表示
+        }
+    }
+    private void addNewRecipe() {
+        try {
+            System.out.println("Adding a new recipe.");
+            System.out.print("Enter recipe name: ");
+            String recipeName = reader.readLine(); // レシピ名を取得
+
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            System.out.println("Enter ingredients (type 'done' when finished):");
+            
+            while (true) {
+                System.out.print("Ingredient: ");
+                String ingredientInput = reader.readLine();
+                if ("done".equalsIgnoreCase(ingredientInput)) {
+                    break; // 'done'と入力されたら終了
+                }
+                ingredients.add(new Ingredient(ingredientInput)); // 材料を追加
+            }
+            Recipe newRecipe = new Recipe(recipeName, ingredients); // 新しいRecipeオブジェクトを作成
+            dataHandler.writeData(newRecipe); // データハンドラーを使ってレシピを追加
+            System.out.println("Recipe added successfully."); // 成功メッセージを表示
+        } catch (IOException e) {
+            System.err.println("Failed to add new recipe: " + e.getMessage()); // エラーメッセージを表示
         }
     }
 }
