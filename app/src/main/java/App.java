@@ -14,6 +14,22 @@ public class App {
             System.out.println("2. JSON");
             System.out.print("Select (1/2): ");
             String choice = reader.readLine();
+
+            DataHandler dataHandler;
+
+            // ユーザーの選択に基づいて適切なデータハンドラーを生成
+            if ("1".equals(choice)) {
+                dataHandler = new CSVDataHandler(); // CSVを選択
+            } else if ("2".equals(choice)) {
+                dataHandler = new JSONDataHandler(); // JSONを選択
+            } else {
+                System.out.println("Invalid choice. Defaulting to CSV.");
+                dataHandler = new CSVDataHandler(); // 不正な入力の場合はCSVを選択
+            }
+
+            // RecipeUIインスタンスを作成し、データハンドラーを渡す
+            RecipeUI recipeUI = new RecipeUI(dataHandler);
+            recipeUI.displayMenu(); // メインメニューを表示
             
 
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.recipeapp.ui;
-
+import com.recipeapp.datahandler.DataHandler;
+import com.recipeapp.model.Ingredient;
+import com.recipeapp.model.Recipe;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +35,7 @@ public class RecipeUI {
 
                 switch (choice) {
                     case "1":
+                    displayRecipes();
                         break;
                     case "2":
                         break;
@@ -48,6 +51,32 @@ public class RecipeUI {
             } catch (IOException e) {
                 System.out.println("Error reading input from user: " + e.getMessage());
             }
+        }
+    }
+
+    private void displayRecipes() {
+        try {
+            ArrayList<Recipe> recipes = dataHandler.readData(); // データハンドラーからレシピデータを取得
+    
+            if (recipes.isEmpty()) {
+                System.out.println("No recipes available."); // レシピが存在しない場合
+            } else {
+                System.out.println("Recipes:"); // レシピが存在する場合
+                System.out.println("-----------------------------------");
+                for (Recipe recipe : recipes) {
+                    System.out.println("Recipe Name: " + recipe.getName());
+                    
+                    // 材料名をカンマ区切りで整形
+                    List<String> ingredientNames = new ArrayList<>();
+                    for (Ingredient ingredient : recipe.getIngredients()) {
+                        ingredientNames.add(ingredient.getName());
+                    }
+                    System.out.println("Main Ingredients: " + String.join(", ", ingredientNames));
+                    System.out.println("-----------------------------------");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage()); // エラーメッセージの表示
         }
     }
 }
